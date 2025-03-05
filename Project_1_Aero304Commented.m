@@ -153,6 +153,29 @@ function xdot = odefun(t,x,MU1)
 end
 
 function [pos,vel] = linearizer(initX, initY, t, MU1, pnts, perturbation)
-    % Compute linearized system solution
-    % (Details omitted for brevity, see original code)
+    xlin = initX;
+    ylin = initY;
+    
+    p1 = ((MU1+xlin)^2+ylin^2)^(1/2);
+    p2 = ((1-MU1-xlin)^2+ylin^2)^(1/2);
+    
+    Uxx = 1 - ((1-MU1)/(p1^3)) + (3*(1-MU1)*(xlin+MU1)^2)/(p1^5) + (3*MU1*(-xlin-MU1+1)^2)/(p2^5) - (MU1)/(p2^3);
+    Uyy = 1 - (1-MU1)/(p1^3) + (3*(1-MU1)*ylin^2)/(p1^5) - (MU1)/(p2^3) + (3*MU1*ylin^2)/(p2^5);
+    Uxy = (3*(1-MU1)*(xlin+MU1)*ylin)/(p1^5) - (3*MU1*ylin*(-xlin-MU1+1))/(p2^5);
+ 
+    A = [0 0 1 0; 0 0 0 1; Uxx Uxy 0 2; Uxy Uyy -2 0];
+    [eigvec, eigval] = eig(A);
+    const = eigvec\perturbation;
+
+    tlin=zeros(pnts);
+    Xlin=zeros(pnts,4);
+    
+    for i = 1:pnts
+        tlin(i) = t(i);
+        Xlin(i,:) = (const(1)*eigvec(:,1)*exp(eigval(1,1)*t(i))) + (const(2)*eigvec(:,2)*exp(eigval(2,2)*t(i))) + (const(3)*eigvec(:,3)*exp(eigval(3,3)*t(i))) + (const(4)*eigvec(:,4)*exp(eigval(4,4)*t(i)));
+    end
+
+    % linear pos calc
+    pos = sqrt(Xlin(:,1).^2+Xlin(:,2).^2);
+    vel = sqrt(Xlin(:,3).^2+Xlin(:,4).^2);
 end
