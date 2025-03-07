@@ -16,7 +16,7 @@ pnts = 1000;    % number of descretizations of time
 
 L2_t = linspace(0,T,pnts);         % Set up our time step
 
-[L2_t, L2_x, L2_XI, L2_YI, L2_deltaXPos, L2_deltaXVel, L2_linPos, L2_linVel] = dataGen(L2_t, pnts, MU1, x0, perturbation);
+[L2_t, L2_x, L2_XI, L2_YI, L2_deltaXPos, L2_deltaXVel, L2_linPos, L2_linVel, L2_deltaYPos, L2_deltaYVel] = dataGen(L2_t, pnts, MU1, x0, perturbation);
 
 % plots nominal for L2 in B frame
 figure
@@ -25,6 +25,7 @@ title('yN(t) vs. xN(t), Nominal, Lagrange Point 2');
 xlabel('xN(t)');
 ylabel('yN(t)');
 ax = gca ;
+grid on;
 exportgraphics(ax,'L2_Bframe.png')
 
 % plots L2 in inertial frame
@@ -34,52 +35,39 @@ title('Lagrange Point 2 in the Inertial Frame')
 xlabel('XN(t)');
 ylabel('YN(t)');
 ax = gca ;
+grid on;
 exportgraphics(ax,'L2_Nframe.png')
 
 % plots L2 departure position and velocity vs time
 figure
-subplot(2,1,1)
 plot(L2_t,L2_deltaXPos);      % Plots departure postion vs time
+hold on;
+plot(L2_t, L2_deltaYPos, 'r'); % Added Y component
+hold off;
 title('Lagrange Point 2, departure position vs time');
 xlabel('time')
 ylabel('departure position');
 ax = gca ;
+legend('DeltaXPos', 'DeltaYPos','Location','southwest');
+
+grid on;
 exportgraphics(ax,'L2_PerturbedPos.jpg');
 
-subplot(2,1,2)
+figure
 plot(L2_t,L2_deltaXVel);      % Plots departure velocity vs time
+hold on;
+plot(L2_t, L2_deltaYVel, 'r'); % Added Y component
+hold off;
 title('Lagrange 2, departure velocity vs time');
 xlabel('time');
 ylabel('departure velocity');
 ax = gca ;
+legend('DeltaXVel', 'DeltaYVel', 'Location','southwest');
+grid on;
 exportgraphics(ax,'L2_PerturbedVel.jpg')
 
-[L2_t, L2_x, L2_XI, L2_YI, L2_deltaYPos, L2_deltaYVel, L2_linPos, L2_linVel] = dataGen(L2_t, pnts, MU1, x0, perturbation);
-
-% plots L2 departure position and velocity vs time
-figure;
-subplot(2,1,1)
-plot(L2_t, L2_deltaYPos, 'r'); % Added Y component
-title('Lagrange Point 2, departure position vs time');
-xlabel('time')
-ylabel('departure position')
-legend('deltaYPos')
-ax = gca ;
-exportgraphics(ax,'L2_PerturbedPosY.jpg')
-
-subplot(2,1,2)
-plot(L2_t, L2_deltaYVel, 'r'); % Added Y component
-title('Lagrange 2, departure velocity vs time');
-xlabel('time');
-ylabel('departure velocity');
-legend('deltaYVel')
-ax = gca ;
-exportgraphics(ax,'L2_PerturbedVelY.jpg')
-
-[L2_t, L2_x, L2_XI, L2_YI, L2_deltaXPos, L2_deltaXVel, L2_linPos, L2_linVel] = dataGen(L2_t, pnts, MU1, x0, perturbation);
 % plots linearized solution and departure solution vs time
 figure
-subplot(2,1,1)
 plot(L2_t,L2_linPos);
 hold on 
 plot(L2_t,L2_deltaXPos);
@@ -87,10 +75,12 @@ hold off
 title('Lagrange Point 2 departure vs linearized Position')
 xlabel('t')
 ylabel('Pos in terms of magnitude')
-legend('linear','departure')
+legend('linear','departure', 'Location','northwest')
 ax = gca ;
+grid on;
 exportgraphics(ax,'L2_LinearPos.jpg')
-subplot(2,1,2)
+
+figure
 plot(L2_t,L2_linVel);
 hold on 
 plot(L2_t,L2_deltaXVel);
@@ -98,8 +88,9 @@ hold off
 title('Lagrange Point 2 departure vs linearized Velocity')
 xlabel('t')
 ylabel('Vel in terms of magnitude')
-legend('linear','departure')
+legend('linear','departure', 'Location','northwest')
 ax = gca ;
+grid on;
 exportgraphics(ax,'L2_LinearVel.jpg')
 
 
@@ -114,15 +105,16 @@ load('EM_L4-304P1') % Loads The Langarge point #4 File
 
 L4_t = linspace(0,T,pnts);         % Set up our time step
 
-[L4_t, L4_x, L4_XI, L4_YI, L4_deltaXPos, L4_deltaXVel, L4_linPos, L4_linVel] = dataGen(L4_t, pnts, MU1, x0', perturbation);
+[L4_t, L4_x, L4_XI, L4_YI, L4_deltaXPos, L4_deltaXVel, L4_linPos, L4_linVel, L4_deltaYPos, L4_deltaYVel] = dataGen(L4_t, pnts, MU1, x0', perturbation);
 
-% plots nominal for L4 in B frame
+% plots nominal for L4 in B frameL4_
 figure
 plot(L4_x(:,1),L4_x(:,2))
 title('yN(t) vs. xN(t), Nominal, Lagrange Point 4');
 xlabel('xN(t)');
 ylabel('yN(t)');
 ax = gca ;
+grid on;
 exportgraphics(ax,'L4_Bframe.jpg')
 
 % plots L4 in inertial frame
@@ -132,53 +124,40 @@ title('Lagrange Point 4 in Inertial Frame')
 xlabel('XN(t)');
 ylabel('YN(t)');
 ax = gca ;
+grid on;
 exportgraphics(ax,'L4_Nframe.jpg')
 
 % plots departure postion and velocity vs time
 figure
-subplot(2,1,1)
+
 plot(L4_t,L4_deltaXPos);      % Plots departure postion vs time
+hold on;
+plot(L4_t,L4_deltaYPos, 'g'); % Added Y Pos
+hold off;
 xlabel('time');
 ylabel('departure position');
 title('Lagrange point 4, departure position vs time');
 ax = gca ;
+legend('DeltaXPos', 'DeltaYPos', 'Location','southeast');
+grid on;
 exportgraphics(ax,'L4_PerturbedPosY.jpg')
 
-subplot(2,1,2)
+figure
 plot(L4_t,L4_deltaXVel);      % Plots departure velocity vs time
+hold on;
+plot(L4_t,L4_deltaYVel, 'r'); % Added Y component
+hold off;
 xlabel('time');
 ylabel('departure velocity');
 title('Lagrange point 4, departure velocity vs time');
 ax = gca ;
+legend('DeltaXVel', 'DeltaYVel', 'Location','north');
+grid on;
 exportgraphics(ax,'L4_PerturbedVelY.jpg')
-
-[L4_t, L4_x, L4_XI, L4_YI, L4_deltaYPos, L4_deltaYVel, L4_linPos, L4_linVel] = dataGen(L4_t, pnts, MU1, x0', perturbation);
-
-% plots departure postion and velocity vs time
-figure;
-subplot(2,1,1)
-plot(L4_t,L4_deltaYPos, 'g');      % Plots departure postion vs time
-xlabel('time');
-ylabel('departure position');
-title('Lagrange point 4, departure position vs time');
-legend('deltaYPos')
-ax = gca ;
-exportgraphics(ax,'L4_PerturbedPosY.jpg')
-
-subplot(2,1,2)
-plot(L4_t,L4_deltaYVel, 'r');      % Plots departure velocity vs time
-xlabel('time');
-ylabel('departure velocity');
-title('Lagrange point 4, departure velocity vs time');
-legend('deltaYVel')
-ax = gca ;
-exportgraphics(ax,'L4_PerturbedVelY.jpg')
-
-[L4_t, L4_x, L4_XI, L4_YI, L4_deltaXPos, L4_deltaXVel, L4_linPos, L4_linVel] = dataGen(L4_t, pnts, MU1, x0', perturbation);
 
 % linear comparison plot L4
 figure
-subplot(2,1,1)
+
 plot(L4_t,L4_linPos);
 hold on 
 plot(L4_t,L4_deltaXPos);
@@ -186,11 +165,12 @@ hold off
 title('Lagrange Point 4 departure vs linearized Position')
 xlabel('t')
 ylabel('Pos')
-legend('linear','perturbed')
+legend('linear','perturbed', 'Location','southeast')
 ax = gca ;
+grid on;
 exportgraphics(ax,'L4_LinearPos.jpg')
 
-subplot(2,1,2)
+figure
 plot(L4_t,L4_linVel);
 hold on 
 plot(L4_t,L4_deltaXVel);
@@ -198,12 +178,13 @@ hold off
 title('Lagrange Point 4 departure vs linearized Velocity')
 xlabel('t')
 ylabel('Vel')
-legend('linear','perturbed')
+legend('linear','perturbed', 'Location','southeast')
 ax = gca ;
+grid on;
 exportgraphics(ax,'L4_LinearVel.jpg')
 
 %% Functions
-function [t, x, XI, YI, deltaXPos, deltaXVel,  linPos, linVel, deltaYPos ] = dataGen(t, pnts, MU1, x0, perturbation)
+function [t, x, XI, YI, deltaXPos, deltaXVel,  linPos, linVel, deltaYPos, deltaYVel] = dataGen(t, pnts, MU1, x0, perturbation)
     options = odeset('reltol',1e-12,'abstol',1e-12);
     [t,x] = ode45(@(t,x) odefun(t,x,MU1), t, x0, options);
 
@@ -220,12 +201,12 @@ function [t, x, XI, YI, deltaXPos, deltaXVel,  linPos, linVel, deltaYPos ] = dat
     deltaX = xP - x;
     
     % X-componets
-    deltaXPos = sqrt((deltaX(:,1)).^2+(deltaX(:,2)).^2);
-    deltaXVel = sqrt((deltaX(:,3)).^2+(deltaX(:,4)).^2);
+    deltaXPos = deltaX(:,1);
+    deltaXVel = deltaX(:,3);
 
     % Y-componets
-    deltaYPos = sqrt((deltaX(:,2)).^2+(deltaX(:,1)).^2);
-    deltaYVel = sqrt((deltaX(:,4)).^2+(deltaX(:,1)).^2);
+    deltaYPos = deltaX(:,2);
+    deltaYVel = deltaX(:,4);
     
     %1/2 -Mu1
 
