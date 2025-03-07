@@ -12,7 +12,7 @@ close all; % Closes all figures if any
 
 load('EM_L2-304P1');  % Loads The Langarge point #2 File
 
-pnts = 1000;    % number of descretizations of time
+pnts = 1000;    % number of discretizations of time
 
 L2_t = linspace(0,T,pnts);         % Set up our time step
 
